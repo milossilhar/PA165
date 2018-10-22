@@ -27,7 +27,10 @@ public class MainJavaSe {
 		emf = Persistence.createEntityManagerFactory("default");
 		try {
 			// BEGIN YOUR CODE
-			task04();
+			//task04();
+                        //task05();
+                        //task06();
+                        task07();
 			// END YOUR CODE
 		} finally {
 			emf.close();
@@ -42,6 +45,21 @@ public class MainJavaSe {
 		// Then you have to start transaction using getTransaction().begin()
 		// Then use persist() to persist both of the categories and finally commit the transaction
 
+                EntityManager manager = emf.createEntityManager();
+                manager.getTransaction().begin();
+
+                Category electronics = new Category();
+                Category musical = new Category();
+
+                electronics.setName("Electronics");
+                musical.setName("Musical");
+
+                manager.persist(electronics);
+                manager.persist(musical);
+
+                manager.getTransaction().commit();
+                manager.close();
+                
 		// The code below is just testing code. Do not modify it
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
@@ -73,6 +91,12 @@ public class MainJavaSe {
 		// TODO under this line. create new entity manager and start new transaction. Merge
 		// the detached category
 		// into the context and change the name to "Electro"
+                EntityManager manager = emf.createEntityManager();
+                manager.getTransaction().begin();
+                category = manager.merge(category);
+                category.setName("Electro");
+                manager.getTransaction().commit();
+                manager.close();
 
 		// The code below is just testing code. Do not modify it
 		EntityManager checkingEm = emf.createEntityManager();
@@ -99,9 +123,17 @@ public class MainJavaSe {
 		//
 		// Additional task: Change the underlying table of Product entity to be ESHOP_PRODUCTS. After you do this, check this by inspecting console output (the CREATE TABLE statement)
 		//
-
-/** TODO uncoment all the code below after you finish the TODO's
-
+                
+                EntityManager manager = emf.createEntityManager();
+                manager.getTransaction().begin();
+                Product product = new Product();
+                product.setName("Guitar");
+                product.setColor(Color.BLACK);
+                product.setAddedDate(LocalDate.of(2011, Month.JANUARY, 20));
+                manager.persist(product);
+                manager.getTransaction().commit();
+                manager.close();
+                
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		Product p = em.createQuery("select p from Product p", Product.class)
@@ -135,7 +167,6 @@ public class MainJavaSe {
 		em.close();
 
 		System.out.println("Task6 ok!");
-**/
 	}
 	
 	private static void task07() {
@@ -146,9 +177,6 @@ public class MainJavaSe {
 		
 		//TODO after you implement equals nad hashCode, you can uncomment the code below. It will try
 		// to check whether you are doing everything correctly. 
-	
-/* TODO uncomment the following (it should work if you were successfull with task08)
-
 
 		class MockProduct extends Product {
 			private boolean getNameCalled = false;
@@ -185,8 +213,6 @@ public class MainJavaSe {
 		if (mp.getNameCalled){
 			System.out.println("CORRECT");
 		} else System.out.println("INCORRECT!");
-		 */
-	
 	}
 
 	private static void assertEq(Object obj1, Object obj2) {
